@@ -14,6 +14,7 @@
             properties.push({
                 name: key,
                 equal: false,
+                type: keySet[key].type,
                 missing: missing
             });
         }
@@ -26,14 +27,16 @@
             equal = types.leftType === types.rightType;
 
             definition = {
-                name: key,
-                equal: true
+                name: key
             };
 
             if (!equal) {
                 definition.equal = false;
                 definition.leftType = types.leftType;
                 definition.righType = types.rightType;
+            } else {
+                definition.equal = true;
+                definition.type = types.leftType;
             }
 
             properties.push(definition);
@@ -68,8 +71,11 @@
         }
 
         for (key in o1) {
-            o1KeySet[key] = true;
+            o1KeySet[key] = {
+                type: typeof o1[key]
+            };
         }
+
         for (key in o2) {
             if (o1KeySet[key]) {
                 delete o1KeySet[key];
@@ -78,9 +84,12 @@
                     rightType: typeof o2[key]
                 };
             } else {
-                o2KeySet[key] = true;
+                o2KeySet[key] = {
+                    type: typeof o2[key]
+                };
             }
         }
+
         addPresentProperties(properties, keySet);
         addMissingProperties(properties, o1KeySet, "right");
         addMissingProperties(properties, o2KeySet, "left");

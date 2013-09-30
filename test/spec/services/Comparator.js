@@ -47,7 +47,8 @@
                 equal: true,
                 properties: [{
                     name: 'a',
-                    equal: true
+                    equal: true,
+                    type: 'number'
                 }]
             });
         });
@@ -58,7 +59,8 @@
                 properties: [{
                     name: 'a',
                     equal: false,
-                    missing: 'left'
+                    missing: 'left',
+                    type: 'number'
                 }]
             });
             expect(Comparator.compare({a: 1}, {})).toEqual({
@@ -66,7 +68,8 @@
                 properties: [{
                     name: 'a',
                     equal: false,
-                    missing: 'right'
+                    missing: 'right',
+                    type: 'number'
                 }]
             });
         });
@@ -79,6 +82,28 @@
                     equal: false,
                     leftType: 'number',
                     righType: 'string'
+                }]
+            });
+        });
+
+        it('should find mixed differences', function () {
+            expect(Comparator.compare({a: 2, b: 3}, {a: "2", c: "a"})).toEqual({
+                equal: false,
+                properties: [{
+                    name: 'a',
+                    equal: false,
+                    leftType: 'number',
+                    righType: 'string'
+                }, {
+                    name: 'b',
+                    equal: false,
+                    missing: 'right',
+                    type: 'number'
+                }, {
+                    name: 'c',
+                    equal: false,
+                    missing: 'left',
+                    type: 'string'
                 }]
             });
         });
