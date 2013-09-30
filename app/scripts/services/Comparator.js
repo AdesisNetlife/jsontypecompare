@@ -21,22 +21,28 @@
     }
 
     function addPresentProperties(properties, keySet) {
-        var key, types, definition, equal;
+        var key, info, definition, equal;
         for (key in keySet) {
-            types = keySet[key];
-            equal = types.leftType === types.rightType;
+            info = keySet[key];
+            equal = info.leftType === info.rightType;
 
             definition = {
                 name: key
             };
 
+
+            definition.equal = equal;
+
             if (!equal) {
-                definition.equal = false;
-                definition.leftType = types.leftType;
-                definition.righType = types.rightType;
+                definition.leftType = info.leftType;
+                definition.righType = info.rightType;
             } else {
-                definition.equal = true;
-                definition.type = types.leftType;
+                definition.type = info.leftType;
+            }
+
+            if (info.properties) {
+                definition.properties = info.properties;
+                definition.equal = equal && (info.equal === undefined || info.equal);
             }
 
             properties.push(definition);
@@ -44,7 +50,9 @@
     }
 
     function compare(o1, o2) {
-        var comparison,
+        var childs,
+            comparison,
+            info,
             key,
             keySet = {},
             o1KeySet = {},
@@ -79,10 +87,17 @@
         for (key in o2) {
             if (o1KeySet[key]) {
                 delete o1KeySet[key];
-                keySet[key] = {
+                info = {
                     leftType: typeof o1[key],
                     rightType: typeof o2[key]
                 };
+                if (info.leftType === 'object') {
+                    childs = compare(o1[key], o2[key]);
+                    childs.leftType = info.leftType;
+                    childs.rightType = info.rightType;
+                    info = childs;
+                }
+                keySet[key] = info;
             } else {
                 o2KeySet[key] = {
                     type: typeof o2[key]

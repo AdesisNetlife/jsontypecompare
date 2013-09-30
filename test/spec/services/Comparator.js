@@ -107,5 +107,22 @@
                 }]
             });
         });
+
+        it('should find different in child objects', function () {
+            expect(Comparator.compare({a: {b: 1}}, {a: {}})).toEqual({
+                equal: false,
+                properties: [{
+                    name: 'a',
+                    equal: false,
+                    type: 'object',
+                    properties: [{
+                        name: 'b',
+                        equal: false,
+                        type: 'number',
+                        missing: 'right'
+                    }]
+                }]
+            });
+        });
     });
 }());
