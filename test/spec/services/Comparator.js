@@ -132,5 +132,30 @@
                 }
             });
         });
+
+        it('should find differences type of arrays', function () {
+            expect(Comparator.compare({a: [1, 2]}, {a: [1, 2, 3]})).toEqual({
+                equal: true,
+                properties: {
+                    'a': {
+                        equal: true,
+                        type: 'array',
+                        arrayType: 'number'
+                    }
+                }
+            });
+            expect(Comparator.compare({a: [1, 2]}, {a: ["1", "2"]})).toEqual({
+                equal: false,
+                properties: {
+                    'a': {
+                        equal: false,
+                        type: 'array',
+                        leftArrayType: 'number',
+                        rightArrayType: 'string'
+                    }
+                }
+            });
+        });
+
     });
 }());

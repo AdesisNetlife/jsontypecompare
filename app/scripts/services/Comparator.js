@@ -1,13 +1,15 @@
 /*global angular*/
 (function () {
     'use strict';
-    var arePropertiesEqual,
+    var analyzeProperty,
+        arePropertiesEqual,
+        compare,
         compareProperties,
-        missingProperties,
-        generatePropertiesDescription,
-        analyzeProperty,
         existingProperties,
-        compare;
+        generateArrayDescription,
+        generatePropertiesDescription,
+        missingProperties;
+
 
     arePropertiesEqual = function arePropertiesEqualFn(properties) {
         var key;
@@ -32,16 +34,28 @@
                     if (property1.type === 'object') {
                         properties[key] = compareProperties(property1.properties, property2.properties);
                         properties[key].type = 'object';
+                    } else if (property1.type === 'array') {
+                        properties[key] = {
+                            type: 'array'
+                        };
+                        if (property1.arrayType === property2.arrayType) {
+                            properties[key].arrayType = property1.arrayType;
+                            properties[key].equal = true;
+                        } else {
+                            properties[key].leftArrayType = property1.arrayType;
+                            properties[key].rightArrayType = property2.arrayType;
+                            properties[key].equal = false;
+                        }
                     } else {
-                        property1.equal = true;
                         properties[key] = property1;
+                        property1.equal = true;
                     }
                 } else {
                     properties[key] = {
                         equal: false,
                         leftType: property1.type,
                         rightType: property2.type
-                    }
+                    };
                 }
             }
         }
@@ -60,12 +74,28 @@
         return properties;
     };
 
+    generateArrayDescription = function generateArrayDescription(arr) {
+        var type;
+        arr.forEach(function (element) {
+            type = typeof element;
+        });
+        return {
+            type: type
+        };
+    };
+
     analyzeProperty = function analyzePropertyFn(o, key) {
-        var description =  {
-            type: typeof o[key]
+        var description, arrayInfo;
+        description =  {
+            type: angular.isArray(o[key]) ? 'array' : typeof o[key]
         };
         if (description.type === 'object') {
             description.properties = generatePropertiesDescription(o[key]);
+        }
+        if (description.type === 'array') {
+            arrayInfo = generateArrayDescription(o[key]);
+            description.arrayType = arrayInfo.type;
+            //description.properties = arrayInfo.properties;
         }
         return description;
     };
