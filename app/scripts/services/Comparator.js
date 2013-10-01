@@ -3,6 +3,7 @@
     'use strict';
     var analyzeProperty,
         arePropertiesEqual,
+        arrayComparison,
         compare,
         compareProperties,
         existingProperties,
@@ -23,6 +24,26 @@
         return true;
     };
 
+    arrayComparison = function arrayComparisonFn(property1, property2) {
+        var property = {
+            type: 'array'
+        };
+        if (property1.arrayType === property2.arrayType) {
+            property.arrayType = property1.arrayType;
+            property.equal = true;
+        } else if (property1.arrayType === 'unknown') {
+            property.arrayType = property2.arrayType;
+            property.equal = true;
+        } else if (property2.arrayType == 'unknown') {
+            property.arrayType = property1.arrayType;
+            property.equal = true;
+        } else {
+            property.leftArrayType = property1.arrayType;
+            property.rightArrayType = property2.arrayType;
+            property.equal = false;
+        }
+        return property;
+    }
 
     existingProperties = function existingPropertiesFn(description1, description2, keySet) {
         var key, property1, property2, properties = {};
@@ -35,17 +56,7 @@
                         properties[key] = compareProperties(property1.properties, property2.properties);
                         properties[key].type = 'object';
                     } else if (property1.type === 'array') {
-                        properties[key] = {
-                            type: 'array'
-                        };
-                        if (property1.arrayType === property2.arrayType) {
-                            properties[key].arrayType = property1.arrayType;
-                            properties[key].equal = true;
-                        } else {
-                            properties[key].leftArrayType = property1.arrayType;
-                            properties[key].rightArrayType = property2.arrayType;
-                            properties[key].equal = false;
-                        }
+                        properties[key] = arrayComparison(property1, property2);
                     } else {
                         properties[key] = property1;
                         property1.equal = true;
@@ -79,6 +90,9 @@
         arr.forEach(function (element) {
             type = typeof element;
         });
+        if (!type) {
+            type = 'unknown';
+        }
         return {
             type: type
         };

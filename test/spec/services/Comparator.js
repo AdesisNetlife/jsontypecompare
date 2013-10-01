@@ -157,5 +157,28 @@
             });
         });
 
+        it('should find consider empty arrays equal to other arrays', function () {
+            expect(Comparator.compare({a: [1, 2]}, {a: []})).toEqual({
+                equal: true,
+                properties: {
+                    'a': {
+                        equal: true,
+                        type: 'array',
+                        arrayType: 'number'
+                    }
+                }
+            });
+            expect(Comparator.compare({a: []}, {a: [1, 2]})).toEqual({
+                equal: true,
+                properties: {
+                    'a': {
+                        equal: true,
+                        type: 'array',
+                        arrayType: 'number'
+                    }
+                }
+            });
+        });
+
     });
 }());
