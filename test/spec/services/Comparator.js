@@ -19,7 +19,8 @@
 
         it('should find equal empty objects', function () {
             expect(Comparator.compare({}, {})).toEqual({
-                equal: true
+                equal: true,
+                properties: {}
             });
         });
 
@@ -45,83 +46,90 @@
         it('should find equal objects with same properties', function () {
             expect(Comparator.compare({a: 2}, {a: 1})).toEqual({
                 equal: true,
-                properties: [{
-                    name: 'a',
-                    equal: true,
-                    type: 'number'
-                }]
+                properties: {
+                    a: {
+                        equal: true,
+                        type: 'number'
+                    }
+                }
             });
         });
 
         it('should find different objects with different properties', function () {
             expect(Comparator.compare({}, {a: 1})).toEqual({
                 equal: false,
-                properties: [{
-                    name: 'a',
-                    equal: false,
-                    missing: 'left',
-                    type: 'number'
-                }]
+                properties: {
+                    a: {
+                        equal: false,
+                        missing: 'left',
+                        type: 'number'
+                    }
+                }
             });
             expect(Comparator.compare({a: 1}, {})).toEqual({
                 equal: false,
-                properties: [{
-                    name: 'a',
-                    equal: false,
-                    missing: 'right',
-                    type: 'number'
-                }]
+                properties: {
+                    a: {
+                        equal: false,
+                        missing: 'right',
+                        type: 'number'
+                    }
+                }
             });
         });
 
         it('should find different objects with properties of different type', function () {
             expect(Comparator.compare({a: 2}, {a: "2"})).toEqual({
                 equal: false,
-                properties: [{
-                    name: 'a',
-                    equal: false,
-                    leftType: 'number',
-                    righType: 'string'
-                }]
+                properties: {
+                    a: {
+                        equal: false,
+                        leftType: 'number',
+                        rightType: 'string'
+                    }
+                }
             });
         });
 
         it('should find mixed differences', function () {
             expect(Comparator.compare({a: 2, b: 3}, {a: "2", c: "a"})).toEqual({
                 equal: false,
-                properties: [{
-                    name: 'a',
-                    equal: false,
-                    leftType: 'number',
-                    righType: 'string'
-                }, {
-                    name: 'b',
-                    equal: false,
-                    missing: 'right',
-                    type: 'number'
-                }, {
-                    name: 'c',
-                    equal: false,
-                    missing: 'left',
-                    type: 'string'
-                }]
+                properties: {
+                    a: {
+                        equal: false,
+                        leftType: 'number',
+                        rightType: 'string'
+                    },
+                    b: {
+                        equal: false,
+                        missing: 'right',
+                        type: 'number'
+                    },
+                    c: {
+                        equal: false,
+                        missing: 'left',
+                        type: 'string'
+                    }
+                }
             });
         });
 
         it('should find different in child objects', function () {
             expect(Comparator.compare({a: {b: 1}}, {a: {}})).toEqual({
                 equal: false,
-                properties: [{
-                    name: 'a',
-                    equal: false,
-                    type: 'object',
-                    properties: [{
-                        name: 'b',
+                properties: {
+                    'a': {
                         equal: false,
-                        type: 'number',
-                        missing: 'right'
-                    }]
-                }]
+                        type: 'object',
+                        properties: {
+                            'b': {
+                                equal: false,
+                                type: 'number',
+                                missing: 'right'
+                            }
+                        }
+                    }
+                }
             });
         });
     });
