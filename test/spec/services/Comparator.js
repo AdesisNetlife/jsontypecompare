@@ -180,5 +180,41 @@
             });
         });
 
+        it('should find consider mixed type arrays different to other arrays, even mixed', function () {
+            expect(Comparator.compare({a: [1, "2"]}, {a: [1, 2]})).toEqual({
+                equal: false,
+                properties: {
+                    'a': {
+                        equal: false,
+                        type: 'array',
+                        leftArrayType: 'mixed',
+                        rightArrayType: 'number'
+                    }
+                }
+            });
+
+            expect(Comparator.compare({a: [1, 2]}, {a: [1, "2"]})).toEqual({
+                equal: false,
+                properties: {
+                    'a': {
+                        equal: false,
+                        type: 'array',
+                        leftArrayType: 'number',
+                        rightArrayType: 'mixed'
+                    }
+                }
+            });
+            expect(Comparator.compare({a: [1, "2"]}, {a: [1, "2"]})).toEqual({
+                equal: false,
+                properties: {
+                    'a': {
+                        equal: false,
+                        type: 'array',
+                        leftArrayType: 'mixed',
+                        rightArrayType: 'mixed'
+                    }
+                }
+            });
+        });
     });
 }());

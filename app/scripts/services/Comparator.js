@@ -28,13 +28,18 @@
         var property = {
             type: 'array'
         };
-        if (property1.arrayType === property2.arrayType) {
+
+        if (property1.arrayType === 'mixed' || property2.arrayType === 'mixed') {
+            property.leftArrayType = property1.arrayType;
+            property.rightArrayType = property2.arrayType;
+            property.equal = false;
+        } else if (property1.arrayType === property2.arrayType) {
             property.arrayType = property1.arrayType;
             property.equal = true;
         } else if (property1.arrayType === 'unknown') {
             property.arrayType = property2.arrayType;
             property.equal = true;
-        } else if (property2.arrayType == 'unknown') {
+        } else if (property2.arrayType === 'unknown') {
             property.arrayType = property1.arrayType;
             property.equal = true;
         } else {
@@ -43,7 +48,7 @@
             property.equal = false;
         }
         return property;
-    }
+    };
 
     existingProperties = function existingPropertiesFn(description1, description2, keySet) {
         var key, property1, property2, properties = {};
@@ -86,9 +91,13 @@
     };
 
     generateArrayDescription = function generateArrayDescription(arr) {
-        var type;
+        var type = "";
         arr.forEach(function (element) {
-            type = typeof element;
+            if (!type) {
+                type = typeof element;
+            } else if (typeof element !== type) {
+                type = "mixed";
+            }
         });
         if (!type) {
             type = 'unknown';
