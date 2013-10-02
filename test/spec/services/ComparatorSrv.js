@@ -180,7 +180,7 @@
             });
         });
 
-        it('should find consider mixed type arrays different to other arrays, even mixed', function () {
+        it('should find consider mixed type arrays different to other arrays, even other mixed arrays', function () {
             expect(ComparatorSrv.compare({a: [1, "2"]}, {a: [1, 2]})).toEqual({
                 equal: false,
                 properties: {
