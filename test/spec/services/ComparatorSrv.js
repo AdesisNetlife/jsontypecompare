@@ -216,5 +216,25 @@
                 }
             });
         });
+
+        it('should compare objects inside arrays', function () {
+            expect(ComparatorSrv.compare({a: [{b: 1}]}, {a: [{b: 2}]})).toEqual({
+                equal: true,
+                properties: {
+                    'a': {
+                        equal: true,
+                        type: 'array',
+                        arrayType: 'object',
+                        properties: {
+                            b: {
+                                equal: true,
+                                type: 'number'
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
     });
 }());

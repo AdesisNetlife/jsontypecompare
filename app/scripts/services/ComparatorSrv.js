@@ -35,7 +35,11 @@
             property.equal = false;
         } else if (property1.arrayType === property2.arrayType) {
             property.arrayType = property1.arrayType;
-            property.equal = true;
+            if (property.arrayType === 'object') {
+                angular.extend(property, compareProperties(property1.properties, property2.properties));
+            } else {
+                property.equal = true;
+            }
         } else if (property1.arrayType === 'unknown') {
             property.arrayType = property2.arrayType;
             property.equal = true;
@@ -91,20 +95,23 @@
     };
 
     generateArrayDescription = function generateArrayDescription(arr) {
-        var type = "";
+        var description = {};
         arr.forEach(function (element) {
-            if (!type) {
-                type = typeof element;
-            } else if (typeof element !== type) {
-                type = "mixed";
+            if (!description.type) {
+                description.type = typeof element;
+            } else if (typeof element !== description.type) {
+                description.type = "mixed";
             }
         });
-        if (!type) {
-            type = 'unknown';
+        if (description.type === 'object') {
+            description.properties = generatePropertiesDescription(arr[0]);
         }
-        return {
-            type: type
-        };
+
+        if (!description.type) {
+            description.type = 'unknown';
+        }
+
+        return description;
     };
 
     analyzeProperty = function analyzePropertyFn(o, key) {
@@ -118,7 +125,7 @@
         if (description.type === 'array') {
             arrayInfo = generateArrayDescription(o[key]);
             description.arrayType = arrayInfo.type;
-            //description.properties = arrayInfo.properties;
+            description.properties = arrayInfo.properties;
         }
         return description;
     };
