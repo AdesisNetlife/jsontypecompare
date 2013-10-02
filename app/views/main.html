@@ -1,9 +1,22 @@
-<div class="hero-unit">
-  <h1>'Allo, 'Allo!</h1>
-  <p>You now have</p>
-  <ul>
-      <li ng-repeat="thing in awesomeThings">{{thing}}</li>
-  </ul>
-  <p>installed.</p>
-  <h3>Enjoy coding! - Yeoman</h3>
+<h1>JSON type comparison</h1>
+<div class="row">
+	<div class="span6">
+		<h3>Left JSON:</h3>
+		<div class="row">
+			<div contentEditable="true" class="jsonInput span6" spellcheck="false" ng-model="leftValue"></div>
+		</div>
+	</div>
+	<div class="span6">
+		<h3>Right JSON:</h3>
+		<div class="row">
+			<div contentEditable="true" class="jsonInput span6" spellcheck="false" ng-model="rightValue"></div>
+		</div>
+	</div>
 </div>
+<div class="row">
+	<button class="btn btn-primary span12" ng-click="compare()">Compare JSON documents</button>
+</div>
+<h2>Comparison</h2>
+<pre>
+{{comparison | json}}
+</pre>
