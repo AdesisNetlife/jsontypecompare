@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('JsoncompareApp', [])
+angular.module('JsontypecompareApp', [])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

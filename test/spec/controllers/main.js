@@ -3,7 +3,7 @@
 describe('Controller: MainCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('JsoncompareApp'));
+  beforeEach(module('JsontypecompareApp'));
 
   var MainCtrl,
     scope;

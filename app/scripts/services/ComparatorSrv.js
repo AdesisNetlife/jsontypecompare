@@ -198,7 +198,7 @@
         return comparison;
     };
 
-    angular.module('JsoncompareApp').service('ComparatorSrv', function ComparatorSrv() {
+    angular.module('JsontypecompareApp').service('ComparatorSrv', function ComparatorSrv() {
         this.compare = compare;
     });
 

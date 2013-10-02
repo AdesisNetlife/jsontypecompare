@@ -5,7 +5,7 @@
     describe('Service: ComparatorSrv', function () {
 
         // load the service's module
-        beforeEach(module('JsoncompareApp'));
+        beforeEach(module('JsontypecompareApp'));
 
         // instantiate service
         var ComparatorSrv;
