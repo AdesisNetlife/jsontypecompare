@@ -79,6 +79,19 @@
                 });
             });
 
+            it('should describe an array of mixed types if objects have properties of same name and different type', function () {
+                expect(DescriptorSrv.generateDescription({a: [{b: 1}, {b: '2'}]})).toEqual({
+                    'a': {
+                        type: 'array',
+                        arrayType: 'mixed',
+                        properties: {
+                            'b': {
+                                type: 'mixed'
+                            }
+                        }
+                    }
+                });
+            });
         });
 
     });
