@@ -21,6 +21,9 @@ body {
     letter-spacing: -1px;
 }
 
+.error {
+    background-color: #ffcccc;
+}
 
 .jsonInput {
     background-color: #ffffff;

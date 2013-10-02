@@ -3,20 +3,22 @@
 	<div class="span6">
 		<h3>Left JSON:</h3>
 		<div class="row">
-			<div contentEditable="true" class="jsonInput span6" spellcheck="false" ng-model="leftValue"></div>
+			<div contentEditable="true" class="jsonInput span6" spellcheck="false" ng-model="leftValue">
+			</div>
 		</div>
 	</div>
 	<div class="span6">
 		<h3>Right JSON:</h3>
 		<div class="row">
-			<div contentEditable="true" class="jsonInput span6" spellcheck="false" ng-model="rightValue"></div>
+			<div contentEditable="true" class="jsonInput span6" spellcheck="false" ng-model="rightValue">
+			</div>
 		</div>
 	</div>
 </div>
 <div class="row">
 	<button class="btn btn-primary span12" ng-click="compare()">Compare JSON documents</button>
 </div>
-<h2>Comparison</h2>
-<pre>
-{{comparison | json}}
-</pre>
+<div ng-show="comparison">
+	<h2>Comparison</h2>
+	<pre ng-bind-html="comparison | json | markerrors"> </pre>
+</div>

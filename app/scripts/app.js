@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('JsontypecompareApp', ['ngRoute'])
+angular.module('JsontypecompareApp', ['ngRoute', 'ngSanitize'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
