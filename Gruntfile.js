@@ -6,6 +6,9 @@
 // 'test/spec/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
+var mountFolder = function (connect, dir) {
+  return connect.static(require('path').resolve(dir));
+};
 
 module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
@@ -71,11 +74,13 @@ module.exports = function (grunt) {
       },
       test: {
         options: {
-          middleware: [
-            '.tmp',
-            'test',
-            '<%= yeoman.app %>'
-          ]
+          middleware: function (connect) {
+            return [
+              mountFolder(connect, '.tmp'),
+              mountFolder(connect, 'test'),
+              mountFolder(connect, '<%= yeoman.app %>')
+            ];
+          }
         }
       },
       dist: {
