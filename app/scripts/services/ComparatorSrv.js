@@ -8,6 +8,7 @@
         compareProperties,
         existingProperties,
         generateArrayDescription,
+        generateArrayPropertiesDescription,
         generatePropertiesDescription,
         missingProperties;
 
@@ -94,6 +95,14 @@
         return properties;
     };
 
+    generateArrayPropertiesDescription = function generateArrayPropertiesDescriptionFn(arr){
+        var properties = {};
+        arr.forEach(function (element){
+            angular.extend(properties, generatePropertiesDescription(element))
+        })
+        return properties;
+    }
+
     generateArrayDescription = function generateArrayDescription(arr) {
         var description = {};
         arr.forEach(function (element) {
@@ -104,7 +113,7 @@
             }
         });
         if (description.arrayType === 'object') {
-            description.properties = generatePropertiesDescription(arr[0]);
+            description.properties = generateArrayPropertiesDescription(arr);
         }
 
         if (!description.arrayType) {

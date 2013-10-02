@@ -226,7 +226,7 @@
                         type: 'array',
                         arrayType: 'object',
                         properties: {
-                            b: {
+                            'b': {
                                 equal: true,
                                 type: 'number'
                             }
@@ -235,6 +235,56 @@
                 }
             });
 
+            expect(ComparatorSrv.compare({a: [{b: 1}]}, {a: [{c: 2}]})).toEqual({
+                equal: false,
+                properties: {
+                    'a': {
+                        equal: false,
+                        type: 'array',
+                        arrayType: 'object',
+                        properties: {
+                            'b': {
+                                equal: false,
+                                type: 'number',
+                                missing: 'right'
+                            },
+                            'c': {
+                                equal: false,
+                                type: 'number',
+                                missing: 'left'
+                            }
+                        }
+                    }
+                }
+            });
+
         });
+
+        it('should combine objects properties inside an array for comparison', function () {
+            expect(ComparatorSrv.compare({a: [{b: 1}, {c: "1"}]}, {a: [{c: "5"}, {b: 2}]})).toEqual({
+                equal: true,
+                properties: {
+                    'a': {
+                        equal: true,
+                        type: 'array',
+                        arrayType: 'object',
+                        properties: {
+                            'b': {
+                                equal: true,
+                                type: 'number'
+                            },
+                            'c': {
+                                equal : true,
+                                type : 'string'
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+
+
+
     });
 }());
