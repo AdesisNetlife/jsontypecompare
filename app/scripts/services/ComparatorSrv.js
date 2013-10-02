@@ -97,25 +97,25 @@
     generateArrayDescription = function generateArrayDescription(arr) {
         var description = {};
         arr.forEach(function (element) {
-            if (!description.type) {
-                description.type = typeof element;
-            } else if (typeof element !== description.type) {
-                description.type = "mixed";
+            if (!description.arrayType) {
+                description.arrayType = typeof element;
+            } else if (typeof element !== description.arrayType) {
+                description.arrayType = "mixed";
             }
         });
-        if (description.type === 'object') {
+        if (description.arrayType === 'object') {
             description.properties = generatePropertiesDescription(arr[0]);
         }
 
-        if (!description.type) {
-            description.type = 'unknown';
+        if (!description.arrayType) {
+            description.arrayType = 'unknown';
         }
 
         return description;
     };
 
     analyzeProperty = function analyzePropertyFn(o, key) {
-        var description, arrayInfo;
+        var description;
         description =  {
             type: angular.isArray(o[key]) ? 'array' : typeof o[key]
         };
@@ -123,9 +123,7 @@
             description.properties = generatePropertiesDescription(o[key]);
         }
         if (description.type === 'array') {
-            arrayInfo = generateArrayDescription(o[key]);
-            description.arrayType = arrayInfo.type;
-            description.properties = arrayInfo.properties;
+            angular.extend(description, generateArrayDescription(o[key]));
         }
         return description;
     };
