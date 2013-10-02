@@ -1,5 +1,5 @@
 /*global angular*/
-(function () {
+(function (angular) {
     'use strict';
     var analyzeProperty,
         findMixedProperty,

@@ -1,5 +1,5 @@
 /*global angular*/
-(function () {
+(function (angular) {
     'use strict';
 
     angular.module('JsontypecompareApp').directive('contenteditable', function () {
