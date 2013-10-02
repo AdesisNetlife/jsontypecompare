@@ -1,15 +1,10 @@
 /*global angular*/
 (function () {
     'use strict';
-    var analyzeProperty,
-        arePropertiesEqual,
+    var arePropertiesEqual,
         arrayComparison,
-        compare,
         compareProperties,
         existingProperties,
-        generateArrayDescription,
-        generateArrayPropertiesDescription,
-        generatePropertiesDescription,
         missingProperties;
 
 
@@ -95,59 +90,6 @@
         return properties;
     };
 
-    generateArrayPropertiesDescription = function generateArrayPropertiesDescriptionFn(arr){
-        var properties = {};
-        arr.forEach(function (element){
-            angular.extend(properties, generatePropertiesDescription(element))
-        })
-        return properties;
-    }
-
-    generateArrayDescription = function generateArrayDescription(arr) {
-        var description = {};
-        arr.forEach(function (element) {
-            if (!description.arrayType) {
-                description.arrayType = typeof element;
-            } else if (typeof element !== description.arrayType) {
-                description.arrayType = "mixed";
-            }
-        });
-        if (description.arrayType === 'object') {
-            description.properties = generateArrayPropertiesDescription(arr);
-        }
-
-        if (!description.arrayType) {
-            description.arrayType = 'unknown';
-        }
-
-        return description;
-    };
-
-    analyzeProperty = function analyzePropertyFn(o, key) {
-        var description;
-        description =  {
-            type: angular.isArray(o[key]) ? 'array' : typeof o[key]
-        };
-        if (description.type === 'object') {
-            description.properties = generatePropertiesDescription(o[key]);
-        }
-        if (description.type === 'array') {
-            angular.extend(description, generateArrayDescription(o[key]));
-        }
-        return description;
-    };
-
-    generatePropertiesDescription = function generatePropertiesDescriptionFn(o) {
-        var properties = {}, key;
-        for (key in o) {
-            if (o.hasOwnProperty(key)) {
-                properties[key] = analyzeProperty(o, key);
-            }
-        }
-        return properties;
-    };
-
-
     compareProperties = function comparePropertiesFn(description1, description2) {
         var key,
             commonKeySet = {},
@@ -182,38 +124,36 @@
         };
     };
 
-    compare = function compareFn(o1, o2) {
-        var o1description, o2description, comparison;
 
+    angular.module('JsontypecompareApp').service('ComparatorSrv', function ComparatorSrv(DescriptorSrv) {
+        this.compare = function compare(o1, o2) {
+            var o1description, o2description, comparison;
 
-        if (o1 === o2) {
-            return {
-                equal: true,
-                same: true
-            };
-        }
-        if (o1 === null) {
-            return {
-                equal: false,
-                missing: "left"
-            };
-        }
-        if (o2 === null) {
-            return {
-                equal: false,
-                missing: "right"
-            };
-        }
+            if (o1 === o2) {
+                return {
+                    equal: true,
+                    same: true
+                };
+            }
+            if (o1 === null) {
+                return {
+                    equal: false,
+                    missing: "left"
+                };
+            }
+            if (o2 === null) {
+                return {
+                    equal: false,
+                    missing: "right"
+                };
+            }
 
-        o1description = generatePropertiesDescription(o1);
-        o2description = generatePropertiesDescription(o2);
-        comparison = compareProperties(o1description, o2description);
+            o1description = DescriptorSrv.generateDescription(o1);
+            o2description = DescriptorSrv.generateDescription(o2);
+            comparison = compareProperties(o1description, o2description);
 
-        return comparison;
-    };
-
-    angular.module('JsontypecompareApp').service('ComparatorSrv', function ComparatorSrv() {
-        this.compare = compare;
+            return comparison;
+        };
     });
 
 }(angular));
