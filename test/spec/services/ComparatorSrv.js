@@ -2,34 +2,34 @@
 (function () {
     'use strict';
 
-    describe('Service: Comparator', function () {
+    describe('Service: ComparatorSrv', function () {
 
         // load the service's module
         beforeEach(module('JsoncompareApp'));
 
         // instantiate service
-        var Comparator;
-        beforeEach(inject(function (_Comparator_) {
-            Comparator = _Comparator_;
+        var ComparatorSrv;
+        beforeEach(inject(function (_ComparatorSrv_) {
+            ComparatorSrv = _ComparatorSrv_;
         }));
 
         it('should be something', function () {
-            expect(!!Comparator).toEqual(true);
+            expect(!!ComparatorSrv).toEqual(true);
         });
 
         it('should find equal empty objects', function () {
-            expect(Comparator.compare({}, {})).toEqual({
+            expect(ComparatorSrv.compare({}, {})).toEqual({
                 equal: true,
                 properties: {}
             });
         });
 
         it('should find different object and null', function () {
-            expect(Comparator.compare({}, null)).toEqual({
+            expect(ComparatorSrv.compare({}, null)).toEqual({
                 equal: false,
                 missing: 'right'
             });
-            expect(Comparator.compare(null, {})).toEqual({
+            expect(ComparatorSrv.compare(null, {})).toEqual({
                 equal: false,
                 missing: 'left'
             });
@@ -37,14 +37,14 @@
 
         it('should find equal and same when is same object', function () {
             var a = {b: 1};
-            expect(Comparator.compare(a, a)).toEqual({
+            expect(ComparatorSrv.compare(a, a)).toEqual({
                 equal: true,
                 same: true
             });
         });
 
         it('should find equal objects with same properties', function () {
-            expect(Comparator.compare({a: 2}, {a: 1})).toEqual({
+            expect(ComparatorSrv.compare({a: 2}, {a: 1})).toEqual({
                 equal: true,
                 properties: {
                     a: {
@@ -56,7 +56,7 @@
         });
 
         it('should find different objects with different properties', function () {
-            expect(Comparator.compare({}, {a: 1})).toEqual({
+            expect(ComparatorSrv.compare({}, {a: 1})).toEqual({
                 equal: false,
                 properties: {
                     a: {
@@ -66,7 +66,7 @@
                     }
                 }
             });
-            expect(Comparator.compare({a: 1}, {})).toEqual({
+            expect(ComparatorSrv.compare({a: 1}, {})).toEqual({
                 equal: false,
                 properties: {
                     a: {
@@ -79,7 +79,7 @@
         });
 
         it('should find different objects with properties of different type', function () {
-            expect(Comparator.compare({a: 2}, {a: "2"})).toEqual({
+            expect(ComparatorSrv.compare({a: 2}, {a: "2"})).toEqual({
                 equal: false,
                 properties: {
                     a: {
@@ -92,7 +92,7 @@
         });
 
         it('should find mixed differences', function () {
-            expect(Comparator.compare({a: 2, b: 3}, {a: "2", c: "a"})).toEqual({
+            expect(ComparatorSrv.compare({a: 2, b: 3}, {a: "2", c: "a"})).toEqual({
                 equal: false,
                 properties: {
                     a: {
@@ -115,7 +115,7 @@
         });
 
         it('should find different in child objects', function () {
-            expect(Comparator.compare({a: {b: 1}}, {a: {}})).toEqual({
+            expect(ComparatorSrv.compare({a: {b: 1}}, {a: {}})).toEqual({
                 equal: false,
                 properties: {
                     'a': {
@@ -134,7 +134,7 @@
         });
 
         it('should find differences type of arrays', function () {
-            expect(Comparator.compare({a: [1, 2]}, {a: [1, 2, 3]})).toEqual({
+            expect(ComparatorSrv.compare({a: [1, 2]}, {a: [1, 2, 3]})).toEqual({
                 equal: true,
                 properties: {
                     'a': {
@@ -144,7 +144,7 @@
                     }
                 }
             });
-            expect(Comparator.compare({a: [1, 2]}, {a: ["1", "2"]})).toEqual({
+            expect(ComparatorSrv.compare({a: [1, 2]}, {a: ["1", "2"]})).toEqual({
                 equal: false,
                 properties: {
                     'a': {
@@ -158,7 +158,7 @@
         });
 
         it('should find consider empty arrays equal to other arrays', function () {
-            expect(Comparator.compare({a: [1, 2]}, {a: []})).toEqual({
+            expect(ComparatorSrv.compare({a: [1, 2]}, {a: []})).toEqual({
                 equal: true,
                 properties: {
                     'a': {
@@ -168,7 +168,7 @@
                     }
                 }
             });
-            expect(Comparator.compare({a: []}, {a: [1, 2]})).toEqual({
+            expect(ComparatorSrv.compare({a: []}, {a: [1, 2]})).toEqual({
                 equal: true,
                 properties: {
                     'a': {
@@ -181,7 +181,7 @@
         });
 
         it('should find consider mixed type arrays different to other arrays, even mixed', function () {
-            expect(Comparator.compare({a: [1, "2"]}, {a: [1, 2]})).toEqual({
+            expect(ComparatorSrv.compare({a: [1, "2"]}, {a: [1, 2]})).toEqual({
                 equal: false,
                 properties: {
                     'a': {
@@ -193,7 +193,7 @@
                 }
             });
 
-            expect(Comparator.compare({a: [1, 2]}, {a: [1, "2"]})).toEqual({
+            expect(ComparatorSrv.compare({a: [1, 2]}, {a: [1, "2"]})).toEqual({
                 equal: false,
                 properties: {
                     'a': {
@@ -204,7 +204,7 @@
                     }
                 }
             });
-            expect(Comparator.compare({a: [1, "2"]}, {a: [1, "2"]})).toEqual({
+            expect(ComparatorSrv.compare({a: [1, "2"]}, {a: [1, "2"]})).toEqual({
                 equal: false,
                 properties: {
                     'a': {
