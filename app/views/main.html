@@ -1,22 +1,24 @@
 <h1>JSON type comparison</h1>
+<p>
+	<label class="checkbox">
+		<input type="checkbox" ng-model="pretty">
+		Prettify inputs
+	</label>
+</p>
 <div class="row">
 	<div class="span6">
 		<h3>Left JSON:</h3>
-		<div class="row">
-			<div contentEditable="true" class="jsonInput span6" spellcheck="false" ng-model="leftValue">
-			</div>
-		</div>
+		<textarea  class="jsonInput span6" ng-blur="pretifyLeft()" spellcheck="false" ng-model="leftValue">
+		</textarea>
 	</div>
 	<div class="span6">
 		<h3>Right JSON:</h3>
-		<div class="row">
-			<div contentEditable="true" class="jsonInput span6" spellcheck="false" ng-model="rightValue">
-			</div>
-		</div>
+		<textarea  class="jsonInput span6" ng-blur="pretifyRight()" spellcheck="false" ng-model="rightValue">
+		</textarea>
 	</div>
 </div>
 <div class="row">
-	<button class="btn btn-primary span12" ng-click="compare()">Compare JSON documents</button>
+	<button ng-disabled="!validDocuments" ng-class="{disabled: !validDocuments}" class="btn btn-primary span12" ng-click="compare()">Compare JSON documents</button>
 </div>
 <div ng-show="comparison">
 	<h2 ng-class='{
