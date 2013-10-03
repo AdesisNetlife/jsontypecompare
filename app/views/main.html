@@ -19,6 +19,12 @@
 	<button class="btn btn-primary span12" ng-click="compare()">Compare JSON documents</button>
 </div>
 <div ng-show="comparison">
-	<h2>Comparison</h2>
+	<h2 ng-class='{
+		"alert alert-success": comparison.equal,
+		"alert alert-error": !comparison.equal
+	}'>
+		<span ng-show="comparison.equal">Objects are of same type</span>
+		<span ng-hide="comparison.equal">Objects are of different types</span>
+	</h2>
 	<pre ng-bind-html="comparison | json | markerrors"> </pre>
 </div>
