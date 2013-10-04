@@ -25,6 +25,10 @@ body {
     background-color: #ffcccc;
 }
 
+a{
+    cursor: pointer;
+}
+
 .jsonInput {
     background-color: #ffffff;
     border: 1px solid #cccccc;

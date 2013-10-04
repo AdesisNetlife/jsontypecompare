@@ -28,5 +28,41 @@
 		<span ng-show="comparison.equal">Objects are of same type</span>
 		<span ng-hide="comparison.equal">Objects are of different types</span>
 	</h2>
-	<pre ng-bind-html="comparison | json | markerrors"> </pre>
+	<div ng-show="!comparison.equal">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Path</th>
+					<th>Difference</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="difference in differences">
+					<td>{{difference.path}}</td>
+					<td>
+						<span ng-if="difference.errorType == 'type'">Type difference:
+							<strong>{{difference.leftType}}</strong> vs
+							<strong>{{difference.rightType}}</strong>
+						</span>
+						<span ng-if="difference.errorType == 'arrayType'">Array type difference:
+							<strong>{{difference.leftArrayType}}</strong> vs
+							<strong>{{difference.rightArrayType}}</strong>
+						</span>
+						<span ng-if="difference.errorType == 'missing'">Missing value:
+							<strong>{{difference.value}}</strong>
+						</span>
+						<span ng-if="difference.errorType == 'children'">Differences in children
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<a ng-click="showComparison = !!!showComparison">
+			<span ng-hide="showComparison">Show</span>
+			<span ng-show="showComparison">Hide</span>
+		comparison result</a>
+	</div>
+	<pre ng-show="showComparison" ng-bind-html="comparison | json | markerrors"> </pre>
 </div>
