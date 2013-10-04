@@ -19,7 +19,7 @@
                 };
 
                 // load init value from DOM
-                ctrl.$setViewValue(elm.html());
+                ctrl.$setViewValue(elm.text());
             }
         };
     });
