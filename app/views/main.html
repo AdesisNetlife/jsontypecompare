@@ -1,23 +1,31 @@
 <h1>JSON type comparison</h1>
-<p>
-	<label class="checkbox">
-		<input type="checkbox" ng-model="pretty">
-		Prettify inputs
-	</label>
-	<label class="checkbox">
-		<input type="checkbox" ng-model="order">
-		Order object properties
-	</label>
-</p>
+<div class="row">
+	<div class="span6">
+		<p>Compare JSON documents.<br> Should be compliant with JSON notation: <a href="http://www.json.org/">http://www.json.org/</a></p>
+	</div>
+	<div class="span1">
+		On blur:
+	</div>
+	<div class="span5">
+		<label class="checkbox">
+			<input type="checkbox" ng-model="pretty">
+			Prettify inputs
+		</label>
+		<label class="checkbox">
+			<input type="checkbox" ng-model="order">
+			Order object properties
+		</label>
+	</div>
+</div>
 <div class="row">
 	<div class="span6">
 		<h3>Left JSON:</h3>
-		<textarea  class="jsonInput span6" ng-blur="prettifyLeft()" spellcheck="false" ng-model="leftValue">
+		<textarea  class="jsonInput span6" ng-blur="prettifyLeft()" placeholder="Copy the first JSON document here" spellcheck="false" ng-model="leftValue">
 		</textarea>
 	</div>
 	<div class="span6">
 		<h3>Right JSON:</h3>
-		<textarea  class="jsonInput span6" ng-blur="prettifyRight()" spellcheck="false" ng-model="rightValue">
+		<textarea  class="jsonInput span6" ng-blur="prettifyRight()" placeholder="Copy the second JSON document to compare here" spellcheck="false" ng-model="rightValue">
 		</textarea>
 	</div>
 </div>
