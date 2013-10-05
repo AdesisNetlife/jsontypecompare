@@ -5,6 +5,7 @@
         findMixedProperty,
         generateArrayDescription,
         generateArrayPropertiesDescription,
+        generateDescription,
         generatePropertiesDescription;
 
     generateArrayPropertiesDescription = function generateArrayPropertiesDescriptionFn(arr) {
@@ -83,8 +84,24 @@
         return properties;
     };
 
+    generateDescription = function generateDescriptionFn(o) {
+        if (angular.isArray(o)) {
+            return angular.extend({type: 'array'}, generateArrayDescription(o));
+        }
+        var properties = {}, key;
+        for (key in o) {
+            if (o.hasOwnProperty(key)) {
+                properties[key] = analyzeProperty(o, key);
+            }
+        }
+        return {
+            type: 'object',
+            properties: properties
+        };
+    };
+
     angular.module('JsontypecompareApp')
         .service('DescriptorSrv', function DescriptorSrv() {
-            this.generateDescription = generatePropertiesDescription;
+            this.generateDescription = generateDescription;
         });
 }(angular));
