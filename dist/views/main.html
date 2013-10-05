@@ -1,0 +1,80 @@
+<h1>JSON type comparison</h1>
+<div class="row">
+	<div class="span6">
+		<p>Compare JSON documents.<br> Should be compliant with JSON notation: <a href="http://www.json.org/">http://www.json.org/</a></p>
+	</div>
+	<div class="span1">
+		On blur:
+	</div>
+	<div class="span5">
+		<label class="checkbox">
+			<input type="checkbox" ng-model="pretty">
+			Prettify inputs
+		</label>
+		<label class="checkbox">
+			<input type="checkbox" ng-model="order">
+			Order object properties
+		</label>
+	</div>
+</div>
+<div class="row">
+	<div class="span6">
+		<h3>Left JSON:</h3>
+		<textarea class="jsonInput span6" ng-blur="prettifyLeft()" placeholder="Copy the first JSON document here" spellcheck="false" ng-model="leftValue">
+		</textarea>
+	</div>
+	<div class="span6">
+		<h3>Right JSON:</h3>
+		<textarea class="jsonInput span6" ng-blur="prettifyRight()" placeholder="Copy the second JSON document to compare here" spellcheck="false" ng-model="rightValue">
+		</textarea>
+	</div>
+</div>
+<div class="row">
+	<button ng-disabled="!validDocuments" ng-class="{disabled: !validDocuments}" class="btn btn-primary span12" ng-click="compare()">Compare JSON documents</button>
+</div>
+<div ng-show="comparison">
+	<h2 ng-class="{
+		\"alert alert-success\": comparison.equal,
+		\"alert alert-error\": !comparison.equal
+	}">
+		<span ng-show="comparison.equal">Objects are of same type</span>
+		<span ng-hide="comparison.equal">Objects are of different types</span>
+	</h2>
+	<div ng-show="!comparison.equal">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Path</th>
+					<th>Difference</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="difference in differences">
+					<td>{{difference.path}}</td>
+					<td>
+						<span ng-if="difference.errorType == 'type'">Type difference:
+							<strong>{{difference.leftType}}</strong> vs
+							<strong>{{difference.rightType}}</strong>
+						</span>
+						<span ng-if="difference.errorType == 'arrayType'">Array type difference:
+							<strong>{{difference.leftArrayType}}</strong> vs
+							<strong>{{difference.rightArrayType}}</strong>
+						</span>
+						<span ng-if="difference.errorType == 'missing'">Missing value:
+							<strong>{{difference.value}}</strong>
+						</span>
+						<span ng-if="difference.errorType == 'children'">Differences in children
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<a ng-click="showComparison = !!!showComparison">
+			<span ng-hide="showComparison">Show</span>
+			<span ng-show="showComparison">Hide</span>
+		comparison result</a>
+	</div>
+	<pre ng-show="showComparison" ng-bind-html="comparison | json | markerrors"> </pre>
+</div>
