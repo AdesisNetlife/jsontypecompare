@@ -60,7 +60,48 @@
         return differences;
     }
 
+
+    function sortArrayProperties(arr) {
+        var i;
+        for (i = 0; i < arr.length; i += 1) {
+            if (arr[i]) {
+                arr[i] = sortProperties(arr[i]);
+            }
+        }
+        return arr;
+    }
+
+    function sortObjectProperties(o1) {
+        var i, key, keys = [], o2 = {}, value;
+        for (key in o1) {
+            if (o1.hasOwnProperty(key)) {
+                keys.push(key);
+            }
+        }
+        keys.sort();
+        for (i = 0; i < keys.length; i += 1) {
+            value = o1[keys[i]];
+            if (typeof value === 'object') {
+                o2[keys[i]] = sortProperties(value);
+            } else {
+                o2[keys[i]] = value;
+            }
+        }
+        return o2;
+    }
+
+    function sortProperties(o1) {
+        if (angular.isArray(o1)) {
+            return sortArrayProperties(o1);
+        }
+        if (typeof o1 === 'object') {
+            return sortObjectProperties(o1);
+        }
+        return o1;
+    }
+
     angular.module('JsontypecompareApp').service('ReporterSrv', function ReporterSrv() {
         this.generateDifferencesReport = generateDifferencesReport;
+        this.sortProperties = sortProperties;
     });
 }(angular));
