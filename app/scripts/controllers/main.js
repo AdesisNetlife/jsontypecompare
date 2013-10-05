@@ -5,18 +5,25 @@
     angular.module('JsontypecompareApp').controller('MainCtrl', function ($scope, ComparatorSrv, ReporterSrv) {
         var o1, o2;
         $scope.pretty = true;
+        $scope.order = true;
         $scope.validDocuments = false;
         $scope.validLeftDocument = false;
         $scope.validRightDocument = false;
 
         $scope.prettifyLeft = function () {
             if ($scope.pretty && o1) {
+                if ($scope.order) {
+                    o1 = ReporterSrv.sortProperties(o1);
+                }
                 $scope.leftValue = JSON.stringify(o1, true, "  ");
             }
         };
 
         $scope.prettifyRight = function () {
             if ($scope.pretty && o2) {
+                if ($scope.order) {
+                    o2 = ReporterSrv.sortProperties(o2);
+                }
                 $scope.rightValue = JSON.stringify(o2, true, "  ");
             }
         };
