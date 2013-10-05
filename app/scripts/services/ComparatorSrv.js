@@ -124,6 +124,17 @@
         };
     };
 
+    function compareDescriptions(description1, description2){
+        if (description1.type !== description2.type) {
+            return {
+                equal: false,
+                leftType: description1.type,
+                rightType: description2.type
+            }
+        }
+
+        return compareProperties(description1.properties, description2.properties);
+    }
 
     angular.module('JsontypecompareApp').service('ComparatorSrv', function ComparatorSrv(DescriptorSrv) {
         this.compare = function compare(o1, o2) {
@@ -150,7 +161,7 @@
 
             o1description = DescriptorSrv.generateDescription(o1);
             o2description = DescriptorSrv.generateDescription(o2);
-            comparison = compareProperties(o1description, o2description);
+            comparison = compareDescriptions(o1description, o2description);
 
             return comparison;
         };

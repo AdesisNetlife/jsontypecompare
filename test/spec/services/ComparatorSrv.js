@@ -43,6 +43,14 @@
             });
         });
 
+        it('should find different objects and arrays', function () {
+            expect(ComparatorSrv.compare([], {})).toEqual({
+                equal: false,
+                leftType: 'array',
+                rightType: 'object'
+            });
+        });
+
         it('should find equal objects with same properties', function () {
             expect(ComparatorSrv.compare({a: 2}, {a: 1})).toEqual({
                 equal: true,
