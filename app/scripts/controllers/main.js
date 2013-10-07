@@ -28,12 +28,18 @@
             }
         };
 
+        function cleanBuggySpaces(value) {
+            var space = String.fromCharCode(160),
+                regexp = new RegExp(space, 'g');
+            return value.replace(regexp, " ");
+        }
+
         $scope.$watch("leftValue", function (newValue) {
             o1 = null;
             $scope.validLeftDocument = false;
             if (newValue) {
                 try {
-                    o1 = JSON.parse(newValue);
+                    o1 = JSON.parse(cleanBuggySpaces(newValue));
                     $scope.validLeftDocument = true;
                 } catch (ex) {
                     $scope.validLeftDocument = false;
@@ -46,7 +52,7 @@
             $scope.validRightDocument = false;
             if (newValue) {
                 try {
-                    o2 = JSON.parse(newValue);
+                    o2 = JSON.parse(cleanBuggySpaces(newValue));
                     $scope.validRightDocument = true;
                 } catch (ex) {
                     $scope.validRightDocument = false;
