@@ -42,6 +42,7 @@
             }
         });
         $scope.$watch("rightValue", function (newValue) {
+            o2 = null;
             $scope.validRightDocument = false;
             if (newValue) {
                 try {
