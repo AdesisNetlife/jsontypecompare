@@ -96,6 +96,16 @@
                     }
                 }
             });
+            expect(ComparatorSrv.compare({a: null}, {})).toEqual({
+                equal: false,
+                properties: {
+                    a: {
+                        equal: false,
+                        missing: 'right',
+                        type: 'null'
+                    }
+                }
+            });
         });
 
         it('should find different objects with properties of different type', function () {
