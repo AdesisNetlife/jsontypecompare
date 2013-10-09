@@ -8,6 +8,16 @@
         generateDescription,
         generatePropertiesDescription;
 
+    function combineTypes(type1, type2) {
+        if (type1 === "null") {
+            return type2;
+        }
+        if (type2 === "null") {
+            return type1;
+        }
+        return "mixed";
+    }
+
     generateArrayPropertiesDescription = function generateArrayPropertiesDescriptionFn(arr) {
         var properties = {};
         arr.forEach(function (element) {
@@ -18,7 +28,7 @@
                     if (!properties[key]) {
                         properties[key] = newProperties[key];
                     } else if (properties[key].type !== newProperties[key].type) {
-                        properties[key].type = 'mixed';
+                        properties[key].type = combineTypes(properties[key].type, newProperties[key].type);
                     }
                 }
             }
@@ -60,10 +70,20 @@
         return description;
     };
 
+    function findType(o, key) {
+        var type;
+        if (o[key] === null) {
+            type = "null";
+        } else {
+            type = angular.isArray(o[key]) ? 'array' : typeof o[key];
+        }
+        return type;
+    }
+
     analyzeProperty = function analyzePropertyFn(o, key) {
         var description;
         description =  {
-            type: angular.isArray(o[key]) ? 'array' : typeof o[key]
+            type: findType(o, key)
         };
         if (description.type === 'object') {
             description.properties = generatePropertiesDescription(o[key]);

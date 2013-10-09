@@ -122,6 +122,18 @@
                     }
                 });
             });
+
+            it('should ignore null properties in objects inside arrays', function () {
+                expect(DescriptorSrv.generateDescription([{a: "1"},{a: null}])).toEqual({
+                    type:'array',
+                    arrayType: 'object',
+                    properties: {
+                        'a': {
+                            type: 'string'
+                        }
+                    }
+                });
+            });
         });
 
     });
