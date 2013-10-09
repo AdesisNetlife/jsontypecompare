@@ -63,6 +63,18 @@
             });
         });
 
+        it('should find equal objects when some properties have null values', function () {
+            expect(ComparatorSrv.compare({a: 2}, {a: null})).toEqual({
+                equal: true,
+                properties: {
+                    a: {
+                        equal: true,
+                        type: 'number'
+                    }
+                }
+            });
+        });
+
         it('should find different objects with different properties', function () {
             expect(ComparatorSrv.compare({}, {a: 1})).toEqual({
                 equal: false,

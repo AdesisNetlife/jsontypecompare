@@ -50,20 +50,33 @@
         return property;
     };
 
+    function sameTypes(desc1, desc2) {
+        if (desc1.type === "null" || desc2.type === "null") {
+            return true;
+        }
+        return desc1.type === desc2.type;
+    }
+
+    function efectiveType(desc1, desc2) {
+        return desc1.type === "null" ? desc2.type : desc1.type;
+    }
+
     existingProperties = function existingPropertiesFn(description1, description2, keySet) {
-        var key, property1, property2, properties = {};
+        var key, property1, property2, properties = {}, type;
         for (key in keySet) {
             if (keySet.hasOwnProperty(key)) {
                 property1 = description1[key];
                 property2 = description2[key];
-                if (property1.type === property2.type) {
-                    if (property1.type === 'object') {
+                if (sameTypes(property1, property2)) {
+                    type = efectiveType(property1, property2);
+                    if (type === 'object') {
                         properties[key] = compareProperties(property1.properties, property2.properties);
                         properties[key].type = 'object';
-                    } else if (property1.type === 'array') {
+                    } else if (type === 'array') {
                         properties[key] = arrayComparison(property1, property2);
                     } else {
                         properties[key] = property1;
+                        property1.type = type;
                         property1.equal = true;
                     }
                 } else {
@@ -124,13 +137,13 @@
         };
     };
 
-    function compareDescriptions(description1, description2){
-        if (description1.type !== description2.type) {
+    function compareDescriptions(description1, description2) {
+        if (!sameTypes(description1, description2)) {
             return {
                 equal: false,
                 leftType: description1.type,
                 rightType: description2.type
-            }
+            };
         }
 
         return compareProperties(description1.properties, description2.properties);
