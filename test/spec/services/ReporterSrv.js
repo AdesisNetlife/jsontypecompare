@@ -40,6 +40,13 @@
                 expect(JSON.stringify(sorted)).toEqual('{"c":[{"a":2,"b":1}]}');
             });
 
+            it('should handle null values', function () {
+                var sorted,
+                    o = {"c":[{"b": null, "a": 2}]};
+                sorted = ReporterSrv.sortProperties(o);
+                expect(JSON.stringify(sorted)).toEqual('{"c":[{"a":2,"b":null}]}');
+            });
+
         });
 
         describe('generateDifferencesReport', function () {

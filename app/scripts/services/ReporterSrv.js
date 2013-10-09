@@ -81,7 +81,9 @@
         keys.sort();
         for (i = 0; i < keys.length; i += 1) {
             value = o1[keys[i]];
-            if (typeof value === 'object') {
+            if (value === null) {
+                o2[keys[i]] = null;
+            } else if (typeof value === 'object') {
                 o2[keys[i]] = sortProperties(value);
             } else {
                 o2[keys[i]] = value;
